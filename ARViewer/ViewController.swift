@@ -8,6 +8,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     @IBOutlet weak var scoreLabel: UILabel!
     
+    var aliens: [Alien] = []
+    
     private var userScore: Int = 0 {
         didSet {
             // ensure UI update runs on main thread
@@ -141,20 +143,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func addAlien() {
         let alienNode = Alien()
         
-        let posX = floatBetween(-3, and: 3)
-        let posY = floatBetween(-3, and: 3)
-        let posZ = floatBetween(-3, and: -3)
+        let posX = floatBetween(-10, and: 10)
+        let posY = Float(0)
+        let posZ = floatBetween(-10, and: -10)
         alienNode.position = SCNVector3(posX, posY, posZ) // SceneKit/AR coordinates are in meters
         
-        let (direction, _) = self.getUserVector()
-        
-        var alienDirection = SCNVector3()
-        if direction.z > 0 {
-            alienDirection = SCNVector3(x: direction.x, y: direction.y, z: direction.z)
-        } else {
-            alienDirection = SCNVector3(x: direction.x, y: direction.y, z: -direction.z)
-        }
-        alienNode.physicsBody?.applyForce(alienDirection, asImpulse: true)
+        aliens.append(alienNode)
         sceneView.scene.rootNode.addChildNode(alienNode)
     }
     
@@ -197,6 +191,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             self.userScore += 1
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // remove alien
+                let index = self.aliens.index(of: contact.nodeA as! Alien)
+                self.aliens.remove(at: index!)
                 self.removeNodeWithAnimation(contact.nodeA, explosion: true)
                 self.addAlien()
             })
@@ -204,6 +200,57 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
     
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        for alien in aliens {
+            if alien.position.x > 0.1 {
+                alien.position.x -= 0.001
+            } else if alien.position.x < -0.1 {
+                alien.position.x += 0.001
+            }
+            
+            if alien.position.y > 0.1 {
+                alien.position.y -= 0.001
+            } else if alien.position.y < -0.1 {
+                alien.position.y += 0.001
+            }
+            
+            if alien.position.z > 0.1 {
+                alien.position.z -= 0.001
+            } else if alien.position.z < -0.1 {
+                alien.position.z += 0.001
+            }
+            
+            if (alien.position.x < 0.1 && alien.position.x > -0.1)
+                && (alien.position.y < 0.1 && alien.position.y > -0.1)
+                && (alien.position.z < 0.1 && alien.position.z > -0.1){
+                print("You lost!")
+                
+                let index = self.aliens.index(of: alien)
+                self.aliens.remove(at: index!)
+                
+                alien.removeFromParentNode()
+            }
+            
+            print("X: \(alien.position.x)")
+            print("Y: \(alien.position.y)")
+            print("Z: \(alien.position.z)")
+            print("")
+        }
+    }
+    
+    /**
+     * Returns dot product of two vectors.
+     */
+    func dotProduct(_ left: SCNVector3, right: SCNVector3) -> Float {
+        return left.x * right.x + left.y * right.y + left.z * right.z
+    }
+    
+    /**
+     * Returns the magnitude of the vector.
+     */
+    public func length(vector: SCNVector3) -> Float {
+        return sqrt(vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
+    }
 }
 
 struct CollisionCategory: OptionSet {
