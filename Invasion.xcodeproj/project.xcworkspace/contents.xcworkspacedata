@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:ARViewer.xcodeproj">
+      location = "self:/Users/jeffchimney/Projects/xcode/Invasion/Invasion.xcodeproj">
    </FileRef>
 </Workspace>

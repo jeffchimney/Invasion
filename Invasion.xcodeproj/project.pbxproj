@@ -21,7 +21,7 @@
 /* Begin PBXFileReference section */
 		06325E361EE8420E00F0D093 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		06325E371EE8420E00F0D093 /* explosion.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = explosion.scnp; sourceTree = "<group>"; };
-		06C51BE41EE68B41006AC09A /* ARViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		06C51BE41EE68B41006AC09A /* Invasion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Invasion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06C51BE71EE68B41006AC09A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		06C51BEB1EE68B41006AC09A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		06C51BEE1EE68B41006AC09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -46,7 +46,7 @@
 		06C51BDB1EE68B41006AC09A = {
 			isa = PBXGroup;
 			children = (
-				06C51BE61EE68B41006AC09A /* ARViewer */,
+				06C51BE61EE68B41006AC09A /* Invasion */,
 				06C51BE51EE68B41006AC09A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,12 +54,12 @@
 		06C51BE51EE68B41006AC09A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				06C51BE41EE68B41006AC09A /* ARViewer.app */,
+				06C51BE41EE68B41006AC09A /* Invasion.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		06C51BE61EE68B41006AC09A /* ARViewer */ = {
+		06C51BE61EE68B41006AC09A /* Invasion */ = {
 			isa = PBXGroup;
 			children = (
 				06C51BE71EE68B41006AC09A /* AppDelegate.swift */,
@@ -73,15 +73,15 @@
 				06C51BF21EE68B41006AC09A /* LaunchScreen.storyboard */,
 				06C51BF51EE68B41006AC09A /* Info.plist */,
 			);
-			path = ARViewer;
+			path = Invasion;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		06C51BE31EE68B41006AC09A /* ARViewer */ = {
+		06C51BE31EE68B41006AC09A /* Invasion */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 06C51BF81EE68B41006AC09A /* Build configuration list for PBXNativeTarget "ARViewer" */;
+			buildConfigurationList = 06C51BF81EE68B41006AC09A /* Build configuration list for PBXNativeTarget "Invasion" */;
 			buildPhases = (
 				06C51BE01EE68B41006AC09A /* Sources */,
 				06C51BE11EE68B41006AC09A /* Frameworks */,
@@ -91,9 +91,9 @@
 			);
 			dependencies = (
 			);
-			name = ARViewer;
+			name = Invasion;
 			productName = ARViewer;
-			productReference = 06C51BE41EE68B41006AC09A /* ARViewer.app */;
+			productReference = 06C51BE41EE68B41006AC09A /* Invasion.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -111,7 +111,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 06C51BDF1EE68B41006AC09A /* Build configuration list for PBXProject "ARViewer" */;
+			buildConfigurationList = 06C51BDF1EE68B41006AC09A /* Build configuration list for PBXProject "Invasion" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -124,7 +124,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				06C51BE31EE68B41006AC09A /* ARViewer */,
+				06C51BE31EE68B41006AC09A /* Invasion */,
 			);
 		};
 /* End PBXProject section */
@@ -286,9 +286,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = JSZY8AYXNH;
-				INFOPLIST_FILE = ARViewer/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Invasion/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Faris-Sbahi.ARViewer";
+				PRODUCT_BUNDLE_IDENTIFIER = com.JeffsApps.Invasion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -300,9 +300,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = JSZY8AYXNH;
-				INFOPLIST_FILE = ARViewer/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Invasion/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Faris-Sbahi.ARViewer";
+				PRODUCT_BUNDLE_IDENTIFIER = com.JeffsApps.Invasion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -312,7 +312,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		06C51BDF1EE68B41006AC09A /* Build configuration list for PBXProject "ARViewer" */ = {
+		06C51BDF1EE68B41006AC09A /* Build configuration list for PBXProject "Invasion" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				06C51BF61EE68B41006AC09A /* Debug */,
@@ -321,7 +321,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		06C51BF81EE68B41006AC09A /* Build configuration list for PBXNativeTarget "ARViewer" */ = {
+		06C51BF81EE68B41006AC09A /* Build configuration list for PBXNativeTarget "Invasion" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				06C51BF91EE68B41006AC09A /* Debug */,

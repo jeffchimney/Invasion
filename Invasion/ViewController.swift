@@ -52,7 +52,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         leftIndicator.isHidden = true
         rightIndicator.isHidden = true
         
-        self.addAlien()
+        //self.addAlien()
         
         self.userScore = 0
         self.creepsOnScreen = aliens.count
@@ -194,19 +194,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // MARK: - Contact Delegate
     
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        //print("did begin contact", contact.nodeA.physicsBody!.categoryBitMask, contact.nodeB.physicsBody!.categoryBitMask)
-        if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.alien.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.alien.rawValue { // this conditional is not required--we've used the bit masks to ensure only one type of collision takes place--will be necessary as soon as more collisions are created/enabled
-            print("Hit an alien!")
-            self.removeNodeWithAnimation(contact.nodeB, explosion: false) // remove bullet
-            self.userScore += 1
+        // only remove nodeA if it hasnt already been removed
+        if (contact.nodeA.parent != nil) {
+            if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.alien.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.alien.rawValue { // this conditional is not required--we've used the bit masks to ensure only one type of collision takes place--will be necessary as soon as more collisions are created/enabled
+                print("Hit an alien!")
+                self.removeNodeWithAnimation(contact.nodeB, explosion: false) // remove bullet
+                self.userScore += 1
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { // remove alien
-                let index = self.aliens.index(of: contact.nodeA as! Alien)
-                self.aliens.remove(at: index!)
-                self.removeNodeWithAnimation(contact.nodeA, explosion: true)
-                self.creepsOnScreen = self.aliens.count
-            })
-            //self.addAlien()
+            
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { // remove alien
+                    if (contact.nodeA.parent != nil) {
+                        let index = self.aliens.index(of: contact.nodeA as! Alien)
+                        self.aliens.remove(at: index!)
+                        self.removeNodeWithAnimation(contact.nodeA, explosion: true)
+                        self.creepsOnScreen = self.aliens.count
+                    } else {
+                        print("Double collision")
+                    }
+                })
+            }
+        } else {
+            print("Double collision")
         }
     }
     
@@ -241,21 +249,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         for alien in aliens {
             if alien.position.x > 0.1 {
-                alien.position.x -= 0.01
+                alien.position.x -= 0.02
             } else if alien.position.x < -0.1 {
-                alien.position.x += 0.01
+                alien.position.x += 0.02
             }
             
             if alien.position.y > 0.1 {
-                alien.position.y -= 0.01
+                alien.position.y -= 0.02
             } else if alien.position.y < -0.1 {
-                alien.position.y += 0.01
+                alien.position.y += 0.02
             }
             
             if alien.position.z > 0.1 {
-                alien.position.z -= 0.01
+                alien.position.z -= 0.02
             } else if alien.position.z < -0.1 {
-                alien.position.z += 0.01
+                alien.position.z += 0.02
             }
             
             if (alien.position.x < 0.1 && alien.position.x > -0.1 && alien.position.y < 0.1 && alien.position.y > -0.1 && alien.position.z < 0.1 && alien.position.z > -0.1)
