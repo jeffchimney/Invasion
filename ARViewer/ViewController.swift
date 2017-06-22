@@ -144,7 +144,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let alienNode = Alien()
         
         let posX = floatBetween(-10, and: 10)
-        let posY = Float(0)
+        let posY = floatBetween(0, and: 10)
         let posZ = floatBetween(-10, and: -10)
         alienNode.position = SCNVector3(posX, posY, posZ) // SceneKit/AR coordinates are in meters
         
@@ -169,7 +169,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func getUserVector() -> (SCNVector3, SCNVector3) { // (direction, position)
         if let frame = self.sceneView.session.currentFrame {
             let mat = SCNMatrix4FromMat4(frame.camera.transform) // 4x4 transform matrix describing camera in world space
-            let dir = SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33) // orientation of camera in world space
+            let dir = SCNVector3(-15 * mat.m31, -15 * mat.m32, -15 * mat.m33) // orientation of camera in world space
             let pos = SCNVector3(mat.m41, mat.m42, mat.m43) // location of camera in world space
             
             return (dir, pos)
@@ -190,7 +190,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             self.removeNodeWithAnimation(contact.nodeB, explosion: false) // remove bullet
             self.userScore += 1
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // remove alien
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { // remove alien
                 let index = self.aliens.index(of: contact.nodeA as! Alien)
                 self.aliens.remove(at: index!)
                 self.removeNodeWithAnimation(contact.nodeA, explosion: true)
@@ -203,32 +203,32 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         for alien in aliens {
             if alien.position.x > 0.1 {
-                alien.position.x -= 0.001
+                alien.position.x -= 0.01
             } else if alien.position.x < -0.1 {
-                alien.position.x += 0.001
+                alien.position.x += 0.01
             }
             
             if alien.position.y > 0.1 {
-                alien.position.y -= 0.001
+                alien.position.y -= 0.01
             } else if alien.position.y < -0.1 {
-                alien.position.y += 0.001
+                alien.position.y += 0.01
             }
             
             if alien.position.z > 0.1 {
-                alien.position.z -= 0.001
+                alien.position.z -= 0.01
             } else if alien.position.z < -0.1 {
-                alien.position.z += 0.001
+                alien.position.z += 0.01
             }
             
-            if (alien.position.x < 0.1 && alien.position.x > -0.1)
+            if (alien.position.x < 0.1 && alien.position.x > -0.1 && alien.position.y < 0.1 && alien.position.y > -0.1 && alien.position.z < 0.1 && alien.position.z > -0.1)
                 && (alien.position.y < 0.1 && alien.position.y > -0.1)
                 && (alien.position.z < 0.1 && alien.position.z > -0.1){
                 print("You lost!")
                 
-                let index = self.aliens.index(of: alien)
-                self.aliens.remove(at: index!)
-                
-                alien.removeFromParentNode()
+//                let index = self.aliens.index(of: alien)
+//                self.aliens.remove(at: index!)
+//                
+//                alien.removeFromParentNode()
             }
             
             print("X: \(alien.position.x)")
@@ -236,20 +236,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             print("Z: \(alien.position.z)")
             print("")
         }
-    }
-    
-    /**
-     * Returns dot product of two vectors.
-     */
-    func dotProduct(_ left: SCNVector3, right: SCNVector3) -> Float {
-        return left.x * right.x + left.y * right.y + left.z * right.z
-    }
-    
-    /**
-     * Returns the magnitude of the vector.
-     */
-    public func length(vector: SCNVector3) -> Float {
-        return sqrt(vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
     }
 }
 
