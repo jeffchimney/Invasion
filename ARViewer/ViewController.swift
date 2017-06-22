@@ -7,14 +7,28 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBOutlet var sceneView: ARSCNView!
     
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var creepsLabel: UILabel!
+    @IBOutlet weak var leftIndicator: UIImageView!
+    @IBOutlet weak var rightIndicator: UIImageView!
     
     var aliens: [Alien] = []
+    var spawnTime: TimeInterval = 10
+    var spawnCoolDown: TimeInterval = 10
     
     private var userScore: Int = 0 {
         didSet {
             // ensure UI update runs on main thread
             DispatchQueue.main.async {
                 self.scoreLabel.text = String(self.userScore)
+            }
+        }
+    }
+    
+    private var creepsOnScreen: Int = 0 {
+        didSet {
+            // ensure UI update runs on main thread
+            DispatchQueue.main.async {
+                self.creepsLabel.text = String(self.creepsOnScreen)
             }
         }
     }
@@ -35,9 +49,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.scene = scene
         sceneView.scene.physicsWorld.contactDelegate = self
         
+        leftIndicator.isHidden = true
+        rightIndicator.isHidden = true
+        
         self.addAlien()
         
         self.userScore = 0
+        self.creepsOnScreen = aliens.count
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,8 +124,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
  */
     
-    // MARK: - Actions
-    
     @IBAction func didTapScreen(_ sender: UITapGestureRecognizer) { // fire bullet in direction camera is facing
         let bulletsNode = Bullet()
         
@@ -120,22 +136,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
     }
     
-    // MARK: - Game Functionality
-    
     func configureSession() {
-        if ARWorldTrackingSessionConfiguration.isSupported { // checks if user's device supports the more precise ARWorldTrackingSessionConfiguration
-                                                            // equivalent to `if utsname().hasAtLeastA9()`
-        // Create a session configuration
-        let configuration = ARWorldTrackingSessionConfiguration()
-        configuration.planeDetection = ARWorldTrackingSessionConfiguration.PlaneDetection.horizontal
-        
-        // Run the view's session
-        sceneView.session.run(configuration)
+        if ARWorldTrackingSessionConfiguration.isSupported {
+            let configuration = ARWorldTrackingSessionConfiguration()
+            configuration.planeDetection = ARWorldTrackingSessionConfiguration.PlaneDetection.horizontal
+            
+            sceneView.session.run(configuration)
         } else {
-            // slightly less immersive AR experience due to lower end processor
             let configuration = ARSessionConfiguration()
             
-            // Run the view's session
             sceneView.session.run(configuration)
         }
     }
@@ -150,6 +159,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         aliens.append(alienNode)
         sceneView.scene.rootNode.addChildNode(alienNode)
+        creepsOnScreen = aliens.count
     }
     
     func removeNodeWithAnimation(_ node: SCNNode, explosion: Bool) {
@@ -194,13 +204,41 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 let index = self.aliens.index(of: contact.nodeA as! Alien)
                 self.aliens.remove(at: index!)
                 self.removeNodeWithAnimation(contact.nodeA, explosion: true)
-                self.addAlien()
+                self.creepsOnScreen = self.aliens.count
             })
-            
+            //self.addAlien()
         }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        if aliens.count > 0 {
+            let firstAlien = aliens.first
+            let (userPosition, _) = getUserVector()
+            
+            let v = CGPoint(x: CGFloat(firstAlien!.position.x - userPosition.x), y: CGFloat(firstAlien!.position.y - userPosition.y))
+            let angle = atan2(v.y, v.x) // Note: order of arguments
+            
+            let projectPoint = sceneView.projectPoint(firstAlien!.position)
+            let projectedPoint = CGPoint(x: CGFloat(projectPoint.x), y: CGFloat(projectPoint.y))
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                let isInView = self.sceneView.frame.contains(projectedPoint)
+                
+                if !isInView {
+                    if angle < 0 { // to the left
+                        self.leftIndicator.isHidden = true
+                        self.rightIndicator.isHidden = false
+                    } else { // to the right
+                        self.leftIndicator.isHidden = false
+                        self.rightIndicator.isHidden = true
+                    }
+                } else {
+                    self.leftIndicator.isHidden = true
+                    self.rightIndicator.isHidden = true
+                }
+            })
+        }
+        
         for alien in aliens {
             if alien.position.x > 0.1 {
                 alien.position.x -= 0.01
@@ -231,11 +269,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 //                alien.removeFromParentNode()
             }
             
-            print("X: \(alien.position.x)")
-            print("Y: \(alien.position.y)")
-            print("Z: \(alien.position.z)")
-            print("")
+//            print("X: \(alien.position.x)")
+//            print("Y: \(alien.position.y)")
+//            print("Z: \(alien.position.z)")
+//            print("")
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            if time > self.spawnTime {
+                self.addAlien()
+                // 2
+                if (self.spawnCoolDown >= 2.0) {
+                    self.spawnTime = time + self.spawnCoolDown
+                    self.spawnCoolDown -= 0.5
+                } else {
+                    self.spawnTime = time + 2
+                }
+            }
+        })
+    }
+    
+    func randomBetweenNumbers(firstNum: CGFloat, secondNum: CGFloat) -> CGFloat{
+        return CGFloat(arc4random()) / CGFloat(UINT32_MAX) * abs(firstNum - secondNum) + min(firstNum, secondNum)
     }
 }
 

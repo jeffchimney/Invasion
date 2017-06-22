@@ -5,7 +5,7 @@ import SceneKit
 class Alien: SCNNode {
     override init() {
         super.init()
-        let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
+        let box = SCNBox(width: 0.5, height: 0.5, length: 0.5, chamferRadius: 0.1)
         self.geometry = box
         let shape = SCNPhysicsShape(geometry: box, options: nil)
         self.physicsBody = SCNPhysicsBody(type: .dynamic, shape: shape)
@@ -17,7 +17,7 @@ class Alien: SCNNode {
         
         // add texture
         let material = SCNMaterial()
-        material.diffuse.contents = UIImage(named: "galaxy")
+        material.diffuse.contents = UIColor.blue
         self.geometry?.materials  = [material, material, material, material, material, material]
     }
     
