@@ -16,6 +16,7 @@
 		06C51BF41EE68B41006AC09A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06C51BF21EE68B41006AC09A /* LaunchScreen.storyboard */; };
 		06FA0DB61EE7628F0051FC68 /* Alien.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FA0DB51EE7628F0051FC68 /* Alien.swift */; };
 		06FA0DB81EE763F50051FC68 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FA0DB71EE763F50051FC68 /* Bullet.swift */; };
+		BE41BD9D1EFDC687004EA97C /* incoming.scnp in Resources */ = {isa = PBXBuildFile; fileRef = BE41BD9C1EFDC687004EA97C /* incoming.scnp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		06C51BF51EE68B41006AC09A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06FA0DB51EE7628F0051FC68 /* Alien.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alien.swift; sourceTree = "<group>"; };
 		06FA0DB71EE763F50051FC68 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
+		BE41BD9C1EFDC687004EA97C /* incoming.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = incoming.scnp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				06C51BF01EE68B41006AC09A /* Assets.xcassets */,
 				06C51BF21EE68B41006AC09A /* LaunchScreen.storyboard */,
 				06C51BF51EE68B41006AC09A /* Info.plist */,
+				BE41BD9C1EFDC687004EA97C /* incoming.scnp */,
 			);
 			path = Invasion;
 			sourceTree = "<group>";
@@ -137,6 +140,7 @@
 				06325E381EE8420E00F0D093 /* spark.png in Resources */,
 				06C51BF41EE68B41006AC09A /* LaunchScreen.storyboard in Resources */,
 				06325E391EE8420E00F0D093 /* explosion.scnp in Resources */,
+				BE41BD9D1EFDC687004EA97C /* incoming.scnp in Resources */,
 				06C51BF11EE68B41006AC09A /* Assets.xcassets in Resources */,
 				06C51BEF1EE68B41006AC09A /* Main.storyboard in Resources */,
 			);

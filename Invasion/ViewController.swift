@@ -152,10 +152,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func addAlien() {
         let alienNode = Alien()
         
-        let posX = floatBetween(-10, and: 10)
-        let posY = floatBetween(0, and: 10)
-        let posZ = floatBetween(-10, and: -10)
-        alienNode.position = SCNVector3(posX, posY, posZ) // SceneKit/AR coordinates are in meters
+        let posX = floatBetween(-15, and: 15)
+        let posY = floatBetween(0, and: 15)
+        let posZ = floatBetween(-15, and: -15)
+        alienNode.position = SCNVector3(posX, posY, posZ)
         
         aliens.append(alienNode)
         sceneView.scene.rootNode.addChildNode(alienNode)
@@ -255,23 +255,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             print("Largest: \(largestCoord!)")
             
             let multiplierX = alien.position.x/largestCoord!
-            if alien.position.x > 0.1 {
+            if alien.position.x > 0.02*multiplierX {
                 alien.position.x -= 0.02*multiplierX
-            } else if alien.position.x < -0.1 {
-                alien.position.x += 0.02*multiplierX
+            } else if alien.position.x < -0.02*multiplierX {
+                alien.position.x -= 0.02*multiplierX
             }
             
             let multiplierY = alien.position.y/largestCoord!
-            if alien.position.y > 0.1 {
+            if alien.position.y > 0.02*multiplierX {
                 alien.position.y -= 0.02*multiplierY
-            } else if alien.position.y < -0.1 {
+            } else if alien.position.y < -0.02*multiplierX {
                 alien.position.y += 0.02*multiplierY
             }
             
             let multiplierZ = alien.position.z/largestCoord!
-            if alien.position.z > 0.1 {
+            if alien.position.z > 0.2 {
                 alien.position.z -= 0.02*(-multiplierZ)
-            } else if alien.position.z < -0.1 {
+            } else if alien.position.z < -0.2 {
                 alien.position.z += 0.02*(-multiplierZ)
             }
             
