@@ -13,7 +13,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     var aliens: [Alien] = []
     var spawnTime: TimeInterval = 10
-    var spawnCoolDown: TimeInterval = 10
+    var spawnCoolDown: TimeInterval = 5
     
     private var userScore: Int = 0 {
         didSet {
@@ -248,23 +248,40 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
         
         for alien in aliens {
+            let coords = [abs(alien.position.x), abs(alien.position.y), abs(alien.position.z)]
+            
+            let largestCoord = coords.max()
+            
+            print("Largest: \(largestCoord!)")
+            
+            let multiplierX = alien.position.x/largestCoord!
             if alien.position.x > 0.1 {
-                alien.position.x -= 0.02
+                alien.position.x -= 0.02*multiplierX
             } else if alien.position.x < -0.1 {
-                alien.position.x += 0.02
+                alien.position.x += 0.02*multiplierX
             }
             
+            let multiplierY = alien.position.y/largestCoord!
             if alien.position.y > 0.1 {
-                alien.position.y -= 0.02
+                alien.position.y -= 0.02*multiplierY
             } else if alien.position.y < -0.1 {
-                alien.position.y += 0.02
+                alien.position.y += 0.02*multiplierY
             }
             
+            let multiplierZ = alien.position.z/largestCoord!
             if alien.position.z > 0.1 {
-                alien.position.z -= 0.02
+                alien.position.z -= 0.02*(-multiplierZ)
             } else if alien.position.z < -0.1 {
-                alien.position.z += 0.02
+                alien.position.z += 0.02*(-multiplierZ)
             }
+            
+            print("multX: \(multiplierX)")
+            print("multY: \(multiplierY)")
+            print("multZ: \(multiplierZ)")
+            
+            print("posX: \(alien.position.x)")
+            print("posY: \(alien.position.y)")
+            print("posZ: \(alien.position.z)")
             
             if (alien.position.x < 0.1 && alien.position.x > -0.1 && alien.position.y < 0.1 && alien.position.y > -0.1 && alien.position.z < 0.1 && alien.position.z > -0.1)
                 && (alien.position.y < 0.1 && alien.position.y > -0.1)
